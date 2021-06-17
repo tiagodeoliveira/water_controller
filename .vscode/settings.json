@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "freertos.h": "c",
+        "esp_system.h": "c",
+        "utils.h": "c",
+        "nvs_flash.h": "c",
+        "esp_partition.h": "c",
+        "nvs.h": "c",
+        "iot_wifi.h": "c",
+        "iot_system_init.h": "c",
+        "esp_log.h": "c"
+    }
+}

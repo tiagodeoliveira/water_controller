@@ -1,21 +1,31 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(water_controller)
+set(PROJECT_NAME "water_controller")
 
-add_executable(controller src/main.c)
+set(IDF_SDKCONFIG_DEFAULTS ${CMAKE_CURRENT_LIST_DIR}/sdkconfig.defaults)
 
-set(IDF_PROJECT_EXECUTABLE controller)
+project(${PROJECT_NAME})
 
-get_filename_component(
-    EXTRA_COMPONENT_DIRS
-    "components/foo" ABSOLUTE
-)
-list(APPEND IDF_EXTRA_COMPONENT_DIRS ${EXTRA_COMPONENT_DIRS})
+file(GLOB SOURCES "src/*.c")
 
-include_directories(BEFORE freertos-configs)
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+
+set(INCLUDE_DIRS ${INCLUDE_DIRS} "include/")
+include_directories(${INCLUDE_DIRS})
+
+set(IDF_PROJECT_EXECUTABLE ${PROJECT_NAME})
 
 set(AFR_BOARD espressif.esp32_devkitc CACHE INTERNAL "")
 add_subdirectory(freertos)
 
-target_link_libraries(controller PRIVATE AFR::demo_mqtt)
-target_link_libraries(controller PRIVATE AFR::demo_ble_numeric_comparison)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        AFR::wifi
+        AFR::utils
+        AFR::common
+        AFR::pkcs11
+        AFR::platform
+        AFR::mqtt
+        AFR::ota
+        3rdparty::jsmn
+)
+
